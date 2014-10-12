@@ -9,8 +9,10 @@ $( document ).ready(function() {
     $(this).find('.btn').toggleClass('btn-default');
 
   });
+
   // grab time text
-  var codeSeconds = $("#codeClock").text();
+  // var codeSeconds = $("#codeClock").text();
+  var codeSeconds = 0;
   
   // convert text into seconds 
   function timeToSeconds(timeAsText) {
@@ -22,28 +24,31 @@ $( document ).ready(function() {
         seconds = parseInt(timeArray[2], 10);
     // convert hours into seconds
     hours = hours * 3600;
+    console.log(hours);
     // convert mins into seconds
     minutes = minutes * 60;
+    console.log(minutes);
     // add everything for total seconds
     codeSeconds = hours + minutes + seconds;
     console.log(codeSeconds);
     return codeSeconds;
   };
-  timeToSeconds(codeSeconds);
+
+  // timeToSeconds(codeSeconds);
 
   // make clock tick 
   function timer() {
-
     codeSeconds++;
     // convert to time HH-MM-SS
     var hours = Math.floor(codeSeconds / 3600);
-    codeSeconds %= 3600;
-    var minutes = Math.floor(codeSeconds / 60);
+    var minutes = codeSeconds % 3600;
+    minutes = Math.floor(codeSeconds / 60);
     var seconds = codeSeconds % 60;
     var time = hours + ":" + minutes + ":" + seconds;
 
     // update timer to new time
     $("#codeClock").html(time);
+    
     
   };
   // make clock tick every second
