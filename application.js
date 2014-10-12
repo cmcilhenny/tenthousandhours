@@ -11,9 +11,26 @@ $( document ).ready(function() {
   });
   // grab time text
   var codeSeconds = $("#codeClock").text();
-  //set time to zero
-  //TODO:  
-  codeSeconds = 0;
+  
+  // convert text into seconds 
+  function timeToSeconds(timeAsText) {
+    // split time string into hours, minutes and seconds
+    var timeArray = codeSeconds.split(":", 3);
+    // convert hours/mins/secs into ints
+    var   hours = parseInt(timeArray[0], 10);
+        minutes = parseInt(timeArray[1], 10);
+        seconds = parseInt(timeArray[2], 10);
+    // convert hours into seconds
+    hours = hours * 3600;
+    // convert mins into seconds
+    minutes = minutes * 60;
+    // add everything for total seconds
+    codeSeconds = hours + minutes + seconds;
+    console.log(codeSeconds);
+    return codeSeconds;
+  };
+  timeToSeconds(codeSeconds);
+
   // make clock tick 
   function timer() {
 
@@ -23,7 +40,7 @@ $( document ).ready(function() {
     codeSeconds %= 3600;
     var minutes = Math.floor(codeSeconds / 60);
     var seconds = codeSeconds % 60;
-    var time = "0" + hours + ":" + minutes + ":" + seconds;
+    var time = hours + ":" + minutes + ":" + seconds;
 
     // update timer to new time
     $("#codeClock").html(time);
