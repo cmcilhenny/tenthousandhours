@@ -2,6 +2,7 @@ $( document ).ready(function() {
   // define timer variable that tracks by seconds
   var seconds = 0;
   var interval;
+  var buttonToggle = false;
 
   // make clock tick 
   function timer() {
@@ -17,19 +18,23 @@ $( document ).ready(function() {
     $("#codeClock").html(time);
   };
 
+
   //toggle on/off button function 
   $('.btn-toggle').click(function() {
     // toggle on/off 
     $(this).find('.btn').toggleClass('active'); 
-
-    if ($(this).find('.btn-primary').length>0) {
-        $(this).find('.btn').toggleClass('btn-primary');
+    console.log(this);
+    if (buttonToggle === false) {
         // start clock
-        interval = setInterval(timer, 1000);
-     
+        buttonToggle = true;
+        interval = setInterval(timer, 1000);  
+        console.log("here");
+    } else if (buttonToggle === true) {
+      // stop clock
+      buttonToggle = false;
+      clearInterval(interval);
+      console.log("there");
     }
-    $(this).find('.btn').toggleClass('btn-default');
-
   });
 
 });
