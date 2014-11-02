@@ -1,6 +1,6 @@
-$( document ).ready(function() {
+$(document).ready(function() {
   // define timer variable that tracks by seconds
-  var timeCount = 0;
+  var timeCount = 3603600;
   var interval;
   var buttonToggle = false;
 
@@ -19,7 +19,7 @@ $( document ).ready(function() {
       time += "0" + hours.toString() + ":";
     } else if (hours >= 1000) {
       hours.toString();
-      
+      // todo: add comma when hours reach four digits
     } else {  
       time += hours.toString() + ":";
     };
@@ -35,15 +35,17 @@ $( document ).ready(function() {
     } else {
       time += seconds.toString();
     }
-
-
    
     // update timer on DOM
     $("#codeClock").html(time);
   };
 
-  // function timerDisplay ()
-
+  function trackProgress(timeCount) {
+    var bar = document.querySelector("#bar-of-progress");
+    bar.textContent = "70%";
+    bar.setAttribute("style", "width: 70%");
+  }
+  trackProgress(timeCount);
   //toggle on/off button function 
   $('.btn-toggle').click(function() {
     // toggle on/off 
