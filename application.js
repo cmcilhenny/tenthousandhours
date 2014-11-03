@@ -1,11 +1,15 @@
 $(document).ready(function() {
   // define timer variable that tracks by seconds
-  var timeCount = 3603600;
+  var timeCount = 33;
   var interval;
   var buttonToggle = false;
+  var percentAchieved = 0;
+  var goalInHours = 1;
+  var goalInSeconds = goalInHours * 3600;
 
   // make clock tick 
   function timer() {
+    // clock tick
     timeCount++;
     // convert to time HH-MM-SS
     var hours = Math.floor(timeCount / 3600);
@@ -35,17 +39,22 @@ $(document).ready(function() {
     } else {
       time += seconds.toString();
     }
-   
     // update timer on DOM
     $("#codeClock").html(time);
+    // update progress bar
+    trackProgress();
   };
 
-  function trackProgress(timeCount) {
+  function trackProgress() {
+    // calculate percent of progress
+    percentAchieved = Math.floor(timeCount/goalInSeconds * 100);
+    // reach into DOM and update progress
     var bar = document.querySelector("#bar-of-progress");
-    bar.textContent = "70%";
-    bar.setAttribute("style", "width: 70%");
+    bar.textContent = percentAchieved.toString() + "%";
+    bar.setAttribute("style", "width: " + percentAchieved + "%");
   }
-  trackProgress(timeCount);
+  // initial call on page load for bar progress
+  trackProgress();
   //toggle on/off button function 
   $('.btn-toggle').click(function() {
     // toggle on/off 
