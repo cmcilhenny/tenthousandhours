@@ -1,11 +1,34 @@
 $(document).ready(function() {
   // define timer variable that tracks by seconds
-  var timeCount = 33;
-  var interval;
+  var timeCount = 3600000; //user.timeCount;
+  var interval; //move into onClick function?
   var buttonToggle = false;
   var percentAchieved = 0;
-  var goalInHours = 1;
+  var goalInHours = 10000;
   var goalInSeconds = goalInHours * 3600;
+  var session = 0;
+
+
+// seed data
+  var user = {
+  id: 3,
+  timeCount: 3600,
+  sessions: [
+    {
+      timeStart: Date.now() - 1000000,
+      sessionLength: 360
+    },
+    {
+      timeStart: Date.now() - 200000000,
+      sessionLength: 3600
+    },
+    {
+      timeStart: Date.now() - 1200000,
+      sessionLength: 4800
+    }
+  ],
+  name: "Joe"
+  }
 
   // make clock tick 
   function timer() {
@@ -21,8 +44,8 @@ $(document).ready(function() {
       time += "";
     } else if (hours< 10 && hours > 0) {
       time += "0" + hours.toString() + ":";
-    } else if (hours >= 1000) {
-      hours.toString();
+    // } else if (hours >= 1000) {
+    //   hours.toString();
       // todo: add comma when hours reach four digits
     } else {  
       time += hours.toString() + ":";
@@ -40,7 +63,7 @@ $(document).ready(function() {
       time += seconds.toString();
     }
     // update timer on DOM
-    $("#codeClock").html(time);
+    $("#totalTime").html(time);
     // update progress bar
     trackProgress();
   };
@@ -55,6 +78,36 @@ $(document).ready(function() {
   }
   // initial call on page load for bar progress
   trackProgress();
+
+  function totalTimeToday() {
+    var today = new Date().setHours(0,0,0,0);
+    var sessionsToday = [];
+
+    // pull out the session objects from today from user object
+    for (var i=0; i<user.sessions.length; i++) {
+      var checkDate = new Date(user.sessions[i].timeStart).setHours(0,0,0,0);
+      if (today === checkDate) {
+        sessionsToday.push(user.sessions[i]);
+      }
+    }
+    // add up all seconds from today
+    var secondsToday = 0;
+    for (var i=0; i<sessionsToday.length; i++) {
+      secondsToday += sessionsToday[i].sessionLength;
+    }
+    // convert seconds into hours, mins, sec
+    var hours = Math.floor(secondsToday / 3600);
+    var minutes = secondsToday % 3600;
+    minutes = Math.floor(minutes / 60);
+    var seconds = secondsToday % 60;
+    var timeToday = hours + ":" + minutes + ":" + seconds;
+    $("#timeToday").html(timeToday);
+  }
+ 
+  function sessionTime() {
+
+  }
+
   //toggle on/off button function 
   $('.btn-toggle').click(function() {
     // toggle on/off 
@@ -64,6 +117,7 @@ $(document).ready(function() {
         // start clock
         buttonToggle = true;
         interval = setInterval(timer, 1000);  
+        totalTimeToday();
         console.log("here");
     } else if (buttonToggle === true) {
       // stop clock
